@@ -1,61 +1,42 @@
 name: Deploy to GitHub Pages
 
+env:
+  PROJECT_PATH: AvaloniaWebDeploySample.Browser/AvaloniaWebDeploySample.Browser.csproj
+  OUTPUT_PATH: AvaloniaWebDeploySample.Browser/bin/Release/net8.0-browser/publish/wwwroot
 on:
-  push:
-    branches: [ main ]
+  workflow_dispatch:
 
 jobs:
   deploy-to-github-pages:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
-      with:
-        submodules: recursive
+      - name: Checkout
+        uses: actions/checkout@v4.1.1
 
-    - name: Setup .NET 8
-      uses: actions/setup-dotnet@v3
-      with:
-          dotnet-version: 8.0.100
+      - name: Setup .NET 8
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 8.0.x
 
-    - name: Install wasm-tools
-      run: dotnet workload install wasm-tools
+      - name: Install wasm-tools
+        run: dotnet workload install wasm-tools
 
-    - name: Install DotNetCompress
-      run: dotnet tool install --global DotNetCompress --version 3.0.0 --no-cache
+      - name: Publish .NET Project
+        run: dotnet publish $PROJECT_PATH -c Release --nologo
 
-    - name: Publish .NET Project
-      run: dotnet publish AvaloniaWebDeploySample.Browser/AvaloniaWebDeploySample.Browser.csproj -c Release -o release --nologo
+      - name: Change base-tag in index.html
+        run: sed -i 's#<base href="/" />#<base href="/Semi.Avalonia/" />#g' $OUTPUT_PATH/index.html
 
-    - name: Brotli Compress Output (dll)
-      run: DotNetCompress -d AvaloniaWebDeploySample.Browser/bin/Release/net8.0-browser -p '*.dll' --format br --threads 4
+      - name: copy index.html to 404.html
+        run: cp $OUTPUT_PATH/index.html $OUTPUT_PATH/404.html
 
-    - name: Brotli Compress Output (js)
-      run: DotNetCompress -d AvaloniaWebDeploySample.Browser/bin/Release/net8.0-browser -p '*.js' --format br --threads 4
+      - name: Add .nojekyll file
+        run: touch $OUTPUT_PATH/.nojekyll
 
-    - name: Brotli Compress Output (wasm)
-      run: DotNetCompress -d AvaloniaWebDeploySample.Browser/bin/Release/net8.0-browser/publish/wwwroot/_framework -p '*.wasm' --format br --threads 4
-
-    - name: GZip Compress Output (dll)
-      run: DotNetCompress -d AvaloniaWebDeploySample.Browser/bin/Release/net8.0-browser/publish/wwwroot/_framework -p '*.dll' --format gz --threads 4
-
-    - name: GZip Compress Output (js)
-      run: DotNetCompress -d AvaloniaWebDeploySample.Browser/bin/Release/net8.0-browser/publish/wwwroot/_framework -p '*.js' --format gz --threads 4
-
-    - name: GZip Compress Output (wasm)
-      run: DotNetCompress -d AvaloniaWebDeploySample.Browser/bin/Release/net8.0-browser/publish/wwwroot/_framework -p '*.wasm' --format gz --threads 4
-
-    - name: Change base-tag in index.html from / to XamlPlayground
-      run: sed -i 's/<base href="\/" \/>/<base href="\/XamlPlayground\/" \/>/g' AvaloniaWebDeploySample.Browser/bin/Release/net8.0-browser/publish/wwwroot/index.html
-
-    - name: copy index.html to 404.html
-      run: cp AvaloniaWebDeploySample.Browser/bin/Release/net8.0-browser/publish/wwwroot/index.html AvaloniaWebDeploySample.Browser/bin/Release/net8.0-browser/publish/wwwroot/404.html
-
-    - name: Add .nojekyll file
-      run: touch AvaloniaWebDeploySample.Browser/bin/Release/net8.0-browser/publish/wwwroot/.nojekyll
-
-    - name: Commit wwwroot to GitHub Pages
-      uses: JamesIves/github-pages-deploy-action@4.1.7
-      with:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        BRANCH: gh-pages
-        FOLDER: AvaloniaWebDeploySample.Browser/bin/Release/net8.0-browser/publish/wwwroot/
+      - name: Commit wwwroot to GitHub Pages
+        uses: JamesIves/github-pages-deploy-action@v4.5.0
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          branch: gh-pages
+          folder: ${{ env.OUTPUT_PATH }}
+          single-commit: true
