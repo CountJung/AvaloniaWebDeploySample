@@ -2,7 +2,7 @@ name: Deploy to GitHub Pages
 
 env:
   PROJECT_PATH: AvaloniaWebDeploySample.Browser/AvaloniaWebDeploySample.Browser.csproj
-  OUTPUT_PATH: AvaloniaWebDeploySample.Browser/bin/Release/net8.0-browser/publish
+  OUTPUT_PATH: AvaloniaWebDeploySample.Browser/bin/Release/net8.0-browser/publish/wwwroot
 
 on:
   workflow_dispatch:
@@ -27,13 +27,13 @@ jobs:
         run: dotnet publish $PROJECT_PATH -c Release -p:GHPages=true -o $OUTPUT_PATH --nologo
 
       - name: Change base-tag in index.html
-        run: sed -i 's#<base href="/" />#<base href="/AvaloniaWebDeploySample/" />#g' $OUTPUT_PATH/wwwroot/index.html
+        run: sed -i 's#<base href="/" />#<base href="/AvaloniaWebDeploySample/" />#g' $OUTPUT_PATH/index.html
 
       - name: copy index.html to 404.html
-        run: cp $OUTPUT_PATH/wwwroot/index.html $OUTPUT_PATH/wwwroot/404.html
+        run: cp $OUTPUT_PATH/index.html $OUTPUT_PATH/404.html
 
       - name: Add .nojekyll file
-        run: touch $OUTPUT_PATH/wwwroot/.nojekyll
+        run: touch $OUTPUT_PATH/.nojekyll
 
       - name: Commit wwwroot to GitHub Pages
         uses: JamesIves/github-pages-deploy-action@v4.5.0
