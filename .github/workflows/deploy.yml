@@ -22,7 +22,7 @@ jobs:
         run: dotnet workload install wasm-tools
 
       - name: Publish .NET Project
-        run: dotnet publish $PROJECT_PATH -c Release -o $OUTPUT_PATH --nologo
+        run: dotnet publish $PROJECT_PATH -c Release -p:GHPages=true -o $OUTPUT_PATH --nologo
 
       - name: Change base-tag in index.html
         run: sed -i 's#<base href="/" />#<base href="/AvaloniaWebDeploySample/" />#g' $OUTPUT_PATH/wwwroot/index.html
