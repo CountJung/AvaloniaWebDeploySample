@@ -28,7 +28,7 @@ jobs:
         run: dotnet publish $PROJECT_PATH -c Release -p:GHPages=true -o $OUTPUT_PATH --nologo
 
       - name: move outputs (WTF)
-        run: mv -f AvaloniaWebDeploySample.Browser/bin/Release/net8.0-browser/publish/wwwroot/ AvaloniaWebDeploySample.Browser/bin/Release/net8.0-browser/publish/
+        run: mv -f AvaloniaWebDeploySample.Browser/bin/Release/net8.0-browser/publish/wwwroot/* AvaloniaWebDeploySample.Browser/bin/Release/net8.0-browser/publish/
 
       - name: Change base-tag in index.html
         run: sed -i 's#<base href="/" />#<base href="/AvaloniaWebDeploySample/" />#g' $OUTPUT_PATH/index.html
