@@ -2,7 +2,8 @@ name: Deploy to GitHub Pages
 
 env:
   PROJECT_PATH: AvaloniaWebDeploySample.Browser/AvaloniaWebDeploySample.Browser.csproj
-  OUTPUT_PATH: AvaloniaWebDeploySample.Browser/bin/Release/net8.0-browser/publish/wwwroot
+  OUTPUT_PATH: publish
+
 on:
   workflow_dispatch:
 
@@ -10,6 +11,8 @@ jobs:
   deploy-to-github-pages:
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout
+        uses: actions/checkout@v3
       - name: Setup .NET 8
         uses: actions/setup-dotnet@v4
         with:
@@ -19,21 +22,21 @@ jobs:
         run: dotnet workload install wasm-tools
 
       - name: Publish .NET Project
-        run: dotnet publish $PROJECT_PATH -c Release --nologo
+        run: dotnet publish $PROJECT_PATH -c Release -o $OUTPUT_PATH --nologo
 
       - name: Change base-tag in index.html
-        run: sed -i 's#<base href="/" />#<base href="/AvaloniaWebDeploySample/" />#g' $OUTPUT_PATH/index.html
+        run: sed -i 's#<base href="/" />#<base href="/AvaloniaWebDeploySample/" />#g' $OUTPUT_PATH/wwwroot/index.html
 
       - name: copy index.html to 404.html
-        run: cp $OUTPUT_PATH/index.html $OUTPUT_PATH/404.html
+        run: cp $OUTPUT_PATH/wwwroot/index.html $OUTPUT_PATH/wwwroot/404.html
 
       - name: Add .nojekyll file
-        run: touch $OUTPUT_PATH/.nojekyll
+        run: touch $OUTPUT_PATH/wwwroot/.nojekyll
 
       - name: Commit wwwroot to GitHub Pages
         uses: JamesIves/github-pages-deploy-action@v4.5.0
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           branch: gh-pages
-          folder: ${{ env.OUTPUT_PATH }}
+          folder: publish
           single-commit: true
