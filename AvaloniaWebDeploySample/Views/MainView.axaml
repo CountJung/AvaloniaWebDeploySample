@@ -3,14 +3,515 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:vm="clr-namespace:AvaloniaWebDeploySample.ViewModels"
-             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             mc:Ignorable="d" d:DesignWidth="1000" d:DesignHeight="1200"
              x:Class="AvaloniaWebDeploySample.Views.MainView"
              x:DataType="vm:MainViewModel">
   <Design.DataContext>
-    <!-- This only sets the DataContext for the previewer in an IDE,
-         to set the actual DataContext for runtime, set the DataContext property in code (look at App.axaml.cs) -->
     <vm:MainViewModel />
   </Design.DataContext>
 
-  <TextBlock Text="{Binding Greeting}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+  <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
+    <StackPanel Margin="20" Spacing="20">
+      
+      <!-- Header -->
+      <Border Background="#6366F1" CornerRadius="12" Padding="20">
+        <StackPanel HorizontalAlignment="Center" Spacing="8">
+          <TextBlock Text="{Binding Title}" FontSize="28" FontWeight="Bold" 
+                     Foreground="White" HorizontalAlignment="Center"/>
+          <TextBlock Text="{Binding Subtitle}" FontSize="14" 
+                     Foreground="#E0E7FF" HorizontalAlignment="Center"/>
+        </StackPanel>
+      </Border>
+
+      <!-- Basic Input Controls Section -->
+      <Border Background="#F8FAFC" CornerRadius="8" Padding="16" BorderBrush="#E2E8F0" BorderThickness="1">
+        <StackPanel Spacing="16">
+          <TextBlock Text="📝 Basic Input Controls" FontSize="18" FontWeight="SemiBold" Foreground="#1E293B"/>
+          <Separator Background="#E2E8F0"/>
+          
+          <!-- Button Examples -->
+          <Expander Header="Button Controls" IsExpanded="True">
+            <StackPanel Spacing="12" Margin="0,10,0,0">
+              <TextBlock Text="Interactive buttons with click counting:" Foreground="#64748B"/>
+              <WrapPanel Orientation="Horizontal">
+                <Button Content="Click Me!" Command="{Binding IncrementClickCommand}" Margin="0,0,8,8"/>
+                <Button Content="Reset" Command="{Binding ResetClickCommand}" Margin="0,0,8,8" Background="#EF4444"/>
+                <Button Content="Disabled Button" IsEnabled="False" Margin="0,0,8,8"/>
+              </WrapPanel>
+              <TextBlock Text="{Binding ButtonMessage}" Foreground="#059669" FontWeight="SemiBold"/>
+              
+              <TextBlock Text="Button Styles:" Foreground="#64748B" Margin="0,8,0,0"/>
+              <WrapPanel Orientation="Horizontal">
+                <Button Content="Primary" Classes="accent" Margin="0,0,8,8"/>
+                <Button Content="With ToolTip" ToolTip.Tip="I'm a tooltip!" Margin="0,0,8,8"/>
+              </WrapPanel>
+            </StackPanel>
+          </Expander>
+          
+          <!-- TextBox Examples -->
+          <Expander Header="TextBox Controls" IsExpanded="True">
+            <StackPanel Spacing="12" Margin="0,10,0,0">
+              <TextBlock Text="Text input with live preview:" Foreground="#64748B"/>
+              <TextBox Watermark="Enter some text here..." Text="{Binding TextBoxContent}" Width="300" HorizontalAlignment="Left"/>
+              <TextBlock Text="{Binding TextBoxPreview}" FontStyle="Italic" Foreground="#8B5CF6"/>
+              
+              <TextBlock Text="Multi-line TextBox:" Foreground="#64748B" Margin="0,8,0,0"/>
+              <TextBox AcceptsReturn="True" Height="80" Width="300" HorizontalAlignment="Left"
+                       Watermark="Multi-line text input...&#x0a;Press Enter for new lines"/>
+              
+              <TextBlock Text="Password Box:" Foreground="#64748B" Margin="0,8,0,0"/>
+              <TextBox PasswordChar="●" Watermark="Enter password..." Width="300" HorizontalAlignment="Left"/>
+            </StackPanel>
+          </Expander>
+          
+          <!-- CheckBox Examples -->
+          <Expander Header="CheckBox Controls" IsExpanded="True">
+            <StackPanel Spacing="8" Margin="0,10,0,0">
+              <TextBlock Text="CheckBoxes with different states:" Foreground="#64748B"/>
+              <CheckBox Content="Option 1 (Unchecked by default)" IsChecked="{Binding IsOption1Checked}"/>
+              <CheckBox Content="Option 2 (Checked by default)" IsChecked="{Binding IsOption2Checked}"/>
+              <CheckBox Content="Option 3 (Three-state)" IsThreeState="True" IsChecked="{Binding IsOption3Checked}"/>
+              <CheckBox Content="Disabled CheckBox" IsEnabled="False"/>
+              <CheckBox Content="Disabled Checked" IsEnabled="False" IsChecked="True"/>
+            </StackPanel>
+          </Expander>
+          
+          <!-- RadioButton Examples -->
+          <Expander Header="RadioButton Controls" IsExpanded="True">
+            <StackPanel Spacing="8" Margin="0,10,0,0">
+              <TextBlock Text="RadioButtons in a group (mutually exclusive):" Foreground="#64748B"/>
+              <StackPanel Orientation="Horizontal" Spacing="16">
+                <RadioButton Content="Choice A" GroupName="DemoGroup" IsChecked="{Binding IsRadio1Selected}"/>
+                <RadioButton Content="Choice B" GroupName="DemoGroup" IsChecked="{Binding IsRadio2Selected}"/>
+                <RadioButton Content="Choice C" GroupName="DemoGroup" IsChecked="{Binding IsRadio3Selected}"/>
+              </StackPanel>
+            </StackPanel>
+          </Expander>
+          
+          <!-- ToggleSwitch Example -->
+          <Expander Header="ToggleSwitch Control" IsExpanded="True">
+            <StackPanel Spacing="8" Margin="0,10,0,0">
+              <TextBlock Text="Toggle switch for on/off states:" Foreground="#64748B"/>
+              <StackPanel Orientation="Horizontal" Spacing="12">
+                <ToggleSwitch IsChecked="{Binding IsToggleOn}" OnContent="ON" OffContent="OFF"/>
+                <TextBlock Text="{Binding IsToggleOn, StringFormat='State: {0}'}" VerticalAlignment="Center"/>
+              </StackPanel>
+            </StackPanel>
+          </Expander>
+        </StackPanel>
+      </Border>
+
+      <!-- Selection Controls Section -->
+      <Border Background="#F8FAFC" CornerRadius="8" Padding="16" BorderBrush="#E2E8F0" BorderThickness="1">
+        <StackPanel Spacing="16">
+          <TextBlock Text="🎯 Selection Controls" FontSize="18" FontWeight="SemiBold" Foreground="#1E293B"/>
+          <Separator Background="#E2E8F0"/>
+          
+          <!-- Slider Example -->
+          <Expander Header="Slider Control" IsExpanded="True">
+            <StackPanel Spacing="8" Margin="0,10,0,0">
+              <TextBlock Text="Drag the slider to change the value (linked to progress bar below):" Foreground="#64748B"/>
+              <Slider Minimum="0" Maximum="100" Value="{Binding SliderValue}" Width="300" HorizontalAlignment="Left"/>
+              <TextBlock Text="{Binding SliderValue, StringFormat='Value: {0:F0}'}" Foreground="#3B82F6" FontWeight="SemiBold"/>
+              
+              <TextBlock Text="Vertical Slider:" Foreground="#64748B" Margin="0,8,0,0"/>
+              <Slider Orientation="Vertical" Minimum="0" Maximum="100" Value="50" Height="100"/>
+            </StackPanel>
+          </Expander>
+          
+          <!-- ComboBox Example -->
+          <Expander Header="ComboBox Control" IsExpanded="True">
+            <StackPanel Spacing="8" Margin="0,10,0,0">
+              <TextBlock Text="Select an item from the dropdown:" Foreground="#64748B"/>
+              <ComboBox ItemsSource="{Binding ComboItems}" SelectedItem="{Binding SelectedItem}" 
+                        Width="200" HorizontalAlignment="Left"/>
+              <TextBlock Text="{Binding SelectedItem, StringFormat='Selected: {0}'}" Foreground="#059669"/>
+            </StackPanel>
+          </Expander>
+          
+          <!-- ListBox Example -->
+          <Expander Header="ListBox Control" IsExpanded="True">
+            <StackPanel Spacing="8" Margin="0,10,0,0">
+              <TextBlock Text="Select an item from the list:" Foreground="#64748B"/>
+              <ListBox ItemsSource="{Binding ListItems}" SelectedItem="{Binding SelectedListItem}" 
+                       Height="120" Width="200" HorizontalAlignment="Left"/>
+              <TextBlock Text="{Binding SelectedListItem, StringFormat='Selected: {0}', TargetNullValue='Nothing selected'}" 
+                         Foreground="#059669"/>
+            </StackPanel>
+          </Expander>
+          
+          <!-- NumericUpDown Example -->
+          <Expander Header="NumericUpDown Control" IsExpanded="True">
+            <StackPanel Spacing="8" Margin="0,10,0,0">
+              <TextBlock Text="Numeric input with increment/decrement buttons:" Foreground="#64748B"/>
+              <NumericUpDown Value="{Binding NumericValue}" Minimum="0" Maximum="100" 
+                             Increment="1" Width="150" HorizontalAlignment="Left"/>
+              <TextBlock Text="{Binding NumericValue, StringFormat='Value: {0}'}" Foreground="#3B82F6"/>
+            </StackPanel>
+          </Expander>
+          
+          <!-- Calendar Example -->
+          <Expander Header="Calendar Control" IsExpanded="True">
+            <StackPanel Spacing="8" Margin="0,10,0,0">
+              <TextBlock Text="Select a date from the calendar:" Foreground="#64748B"/>
+              <Calendar SelectedDate="{Binding SelectedDate}" HorizontalAlignment="Left"/>
+              <TextBlock Text="{Binding SelectedDate, StringFormat='Selected Date: {0:d}'}" Foreground="#059669"/>
+            </StackPanel>
+          </Expander>
+        </StackPanel>
+      </Border>
+
+      <!-- Display Controls Section -->
+      <Border Background="#F8FAFC" CornerRadius="8" Padding="16" BorderBrush="#E2E8F0" BorderThickness="1">
+        <StackPanel Spacing="16">
+          <TextBlock Text="📊 Display Controls" FontSize="18" FontWeight="SemiBold" Foreground="#1E293B"/>
+          <Separator Background="#E2E8F0"/>
+          
+          <!-- TextBlock Examples -->
+          <Expander Header="TextBlock Styles" IsExpanded="True">
+            <StackPanel Spacing="8" Margin="0,10,0,0">
+              <TextBlock Text="Normal text" />
+              <TextBlock Text="Bold text" FontWeight="Bold"/>
+              <TextBlock Text="Italic text" FontStyle="Italic"/>
+              <TextBlock Text="Large text (18pt)" FontSize="18"/>
+              <TextBlock Text="Colored text" Foreground="#8B5CF6"/>
+              <TextBlock Text="Text with background" Background="#FEF3C7" Padding="4"/>
+              <TextBlock TextWrapping="Wrap" Width="300">
+                <Run Text="This is a "/>
+                <Run Text="formatted " FontWeight="Bold"/>
+                <Run Text="text " FontStyle="Italic"/>
+                <Run Text="with " Foreground="#EF4444"/>
+                <Run Text="different " Foreground="#3B82F6"/>
+                <Run Text="styles." TextDecorations="Underline"/>
+              </TextBlock>
+            </StackPanel>
+          </Expander>
+          
+          <!-- ProgressBar Example -->
+          <Expander Header="ProgressBar Control" IsExpanded="True">
+            <StackPanel Spacing="8" Margin="0,10,0,0">
+              <TextBlock Text="Progress bar (linked to slider above):" Foreground="#64748B"/>
+              <ProgressBar Minimum="0" Maximum="100" Value="{Binding ProgressValue}" Width="300" Height="20" HorizontalAlignment="Left"/>
+              <TextBlock Text="{Binding ProgressValue, StringFormat='Progress: {0:F0}%'}" Foreground="#059669"/>
+              
+              <TextBlock Text="Indeterminate Progress Bar:" Foreground="#64748B" Margin="0,8,0,0"/>
+              <ProgressBar IsIndeterminate="True" Width="300" Height="20" HorizontalAlignment="Left"/>
+            </StackPanel>
+          </Expander>
+          
+          <!-- Badge/Label Examples -->
+          <Expander Header="Badges and Labels" IsExpanded="True">
+            <WrapPanel Orientation="Horizontal" Margin="0,10,0,0">
+              <Border Background="#DBEAFE" CornerRadius="12" Padding="8,4" Margin="0,0,8,8">
+                <TextBlock Text="Info" Foreground="#1E40AF" FontSize="12"/>
+              </Border>
+              <Border Background="#DCFCE7" CornerRadius="12" Padding="8,4" Margin="0,0,8,8">
+                <TextBlock Text="Success" Foreground="#166534" FontSize="12"/>
+              </Border>
+              <Border Background="#FEF3C7" CornerRadius="12" Padding="8,4" Margin="0,0,8,8">
+                <TextBlock Text="Warning" Foreground="#92400E" FontSize="12"/>
+              </Border>
+              <Border Background="#FEE2E2" CornerRadius="12" Padding="8,4" Margin="0,0,8,8">
+                <TextBlock Text="Error" Foreground="#991B1B" FontSize="12"/>
+              </Border>
+              <Border Background="#F3E8FF" CornerRadius="12" Padding="8,4" Margin="0,0,8,8">
+                <TextBlock Text="Custom" Foreground="#6B21A8" FontSize="12"/>
+              </Border>
+            </WrapPanel>
+          </Expander>
+        </StackPanel>
+      </Border>
+
+      <!-- Layout Controls Section -->
+      <Border Background="#F8FAFC" CornerRadius="8" Padding="16" BorderBrush="#E2E8F0" BorderThickness="1">
+        <StackPanel Spacing="16">
+          <TextBlock Text="📐 Layout Controls" FontSize="18" FontWeight="SemiBold" Foreground="#1E293B"/>
+          <Separator Background="#E2E8F0"/>
+          
+          <!-- StackPanel Example -->
+          <Expander Header="StackPanel Layout" IsExpanded="True">
+            <StackPanel Spacing="8" Margin="0,10,0,0">
+              <TextBlock Text="Horizontal StackPanel:" Foreground="#64748B"/>
+              <StackPanel Orientation="Horizontal" Spacing="8">
+                <Border Background="#BFDBFE" Padding="12" CornerRadius="4">
+                  <TextBlock Text="Item 1"/>
+                </Border>
+                <Border Background="#BBF7D0" Padding="12" CornerRadius="4">
+                  <TextBlock Text="Item 2"/>
+                </Border>
+                <Border Background="#FED7AA" Padding="12" CornerRadius="4">
+                  <TextBlock Text="Item 3"/>
+                </Border>
+              </StackPanel>
+              
+              <TextBlock Text="Vertical StackPanel:" Foreground="#64748B" Margin="0,8,0,0"/>
+              <StackPanel Orientation="Vertical" Spacing="4" HorizontalAlignment="Left">
+                <Border Background="#BFDBFE" Padding="12" CornerRadius="4" Width="100">
+                  <TextBlock Text="Row 1" HorizontalAlignment="Center"/>
+                </Border>
+                <Border Background="#BBF7D0" Padding="12" CornerRadius="4" Width="100">
+                  <TextBlock Text="Row 2" HorizontalAlignment="Center"/>
+                </Border>
+                <Border Background="#FED7AA" Padding="12" CornerRadius="4" Width="100">
+                  <TextBlock Text="Row 3" HorizontalAlignment="Center"/>
+                </Border>
+              </StackPanel>
+            </StackPanel>
+          </Expander>
+          
+          <!-- Grid Example -->
+          <Expander Header="Grid Layout" IsExpanded="True">
+            <StackPanel Spacing="8" Margin="0,10,0,0">
+              <TextBlock Text="3x3 Grid with row/column definitions:" Foreground="#64748B"/>
+              <Grid Width="300" Height="150" HorizontalAlignment="Left">
+                <Grid.RowDefinitions>
+                  <RowDefinition Height="*"/>
+                  <RowDefinition Height="*"/>
+                  <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                  <ColumnDefinition Width="*"/>
+                  <ColumnDefinition Width="*"/>
+                  <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                
+                <Border Grid.Row="0" Grid.Column="0" Background="#DBEAFE" Margin="2">
+                  <TextBlock Text="R0,C0" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                </Border>
+                <Border Grid.Row="0" Grid.Column="1" Background="#BFDBFE" Margin="2">
+                  <TextBlock Text="R0,C1" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                </Border>
+                <Border Grid.Row="0" Grid.Column="2" Background="#93C5FD" Margin="2">
+                  <TextBlock Text="R0,C2" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                </Border>
+                <Border Grid.Row="1" Grid.Column="0" Background="#DCFCE7" Margin="2">
+                  <TextBlock Text="R1,C0" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                </Border>
+                <Border Grid.Row="1" Grid.Column="1" Background="#BBF7D0" Margin="2">
+                  <TextBlock Text="R1,C1" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                </Border>
+                <Border Grid.Row="1" Grid.Column="2" Background="#86EFAC" Margin="2">
+                  <TextBlock Text="R1,C2" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                </Border>
+                <Border Grid.Row="2" Grid.Column="0" Background="#FEF3C7" Margin="2">
+                  <TextBlock Text="R2,C0" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                </Border>
+                <Border Grid.Row="2" Grid.Column="1" Background="#FDE68A" Margin="2">
+                  <TextBlock Text="R2,C1" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                </Border>
+                <Border Grid.Row="2" Grid.Column="2" Background="#FCD34D" Margin="2">
+                  <TextBlock Text="R2,C2" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                </Border>
+              </Grid>
+            </StackPanel>
+          </Expander>
+          
+          <!-- WrapPanel Example -->
+          <Expander Header="WrapPanel Layout" IsExpanded="True">
+            <StackPanel Spacing="8" Margin="0,10,0,0">
+              <TextBlock Text="Items wrap to next line when they exceed the width:" Foreground="#64748B"/>
+              <WrapPanel Orientation="Horizontal" Width="350">
+                <Border Background="#E9D5FF" Padding="8" CornerRadius="4" Margin="4">
+                  <TextBlock Text="Tag 1"/>
+                </Border>
+                <Border Background="#C4B5FD" Padding="8" CornerRadius="4" Margin="4">
+                  <TextBlock Text="Tag 2"/>
+                </Border>
+                <Border Background="#A78BFA" Padding="8" CornerRadius="4" Margin="4">
+                  <TextBlock Text="Tag 3" Foreground="White"/>
+                </Border>
+                <Border Background="#8B5CF6" Padding="8" CornerRadius="4" Margin="4">
+                  <TextBlock Text="Tag 4" Foreground="White"/>
+                </Border>
+                <Border Background="#7C3AED" Padding="8" CornerRadius="4" Margin="4">
+                  <TextBlock Text="Tag 5" Foreground="White"/>
+                </Border>
+                <Border Background="#6D28D9" Padding="8" CornerRadius="4" Margin="4">
+                  <TextBlock Text="Tag 6" Foreground="White"/>
+                </Border>
+                <Border Background="#5B21B6" Padding="8" CornerRadius="4" Margin="4">
+                  <TextBlock Text="Tag 7" Foreground="White"/>
+                </Border>
+              </WrapPanel>
+            </StackPanel>
+          </Expander>
+          
+          <!-- Border Examples -->
+          <Expander Header="Border Styles" IsExpanded="True">
+            <WrapPanel Orientation="Horizontal" Margin="0,10,0,0">
+              <Border BorderBrush="#3B82F6" BorderThickness="2" Padding="12" Margin="4" CornerRadius="0">
+                <TextBlock Text="Square"/>
+              </Border>
+              <Border BorderBrush="#10B981" BorderThickness="2" Padding="12" Margin="4" CornerRadius="8">
+                <TextBlock Text="Rounded"/>
+              </Border>
+              <Border BorderBrush="#F59E0B" BorderThickness="4" Padding="12" Margin="4" CornerRadius="16">
+                <TextBlock Text="Thick"/>
+              </Border>
+              <Border Background="#F0FDF4" BorderBrush="#22C55E" BorderThickness="1" Padding="12" Margin="4" CornerRadius="4">
+                <TextBlock Text="With BG"/>
+              </Border>
+            </WrapPanel>
+          </Expander>
+        </StackPanel>
+      </Border>
+
+      <!-- Navigation Controls Section -->
+      <Border Background="#F8FAFC" CornerRadius="8" Padding="16" BorderBrush="#E2E8F0" BorderThickness="1">
+        <StackPanel Spacing="16">
+          <TextBlock Text="🧭 Navigation Controls" FontSize="18" FontWeight="SemiBold" Foreground="#1E293B"/>
+          <Separator Background="#E2E8F0"/>
+          
+          <!-- TabControl Example -->
+          <Expander Header="TabControl" IsExpanded="True">
+            <StackPanel Spacing="8" Margin="0,10,0,0">
+              <TextBlock Text="Navigate between different tabs:" Foreground="#64748B"/>
+              <TabControl Width="400" Height="150" HorizontalAlignment="Left">
+                <TabItem Header="Home">
+                  <StackPanel Margin="10">
+                    <TextBlock Text="🏠 Welcome to the Home Tab" FontWeight="Bold"/>
+                    <TextBlock Text="This is the default landing page content." TextWrapping="Wrap"/>
+                  </StackPanel>
+                </TabItem>
+                <TabItem Header="Profile">
+                  <StackPanel Margin="10">
+                    <TextBlock Text="👤 User Profile" FontWeight="Bold"/>
+                    <TextBlock Text="View and edit your profile settings here." TextWrapping="Wrap"/>
+                  </StackPanel>
+                </TabItem>
+                <TabItem Header="Settings">
+                  <StackPanel Margin="10">
+                    <TextBlock Text="⚙️ Application Settings" FontWeight="Bold"/>
+                    <TextBlock Text="Configure your application preferences." TextWrapping="Wrap"/>
+                  </StackPanel>
+                </TabItem>
+              </TabControl>
+            </StackPanel>
+          </Expander>
+          
+          <!-- Expander Example (Already using it throughout!) -->
+          <Expander Header="Expander Control (This section itself!)" IsExpanded="True">
+            <StackPanel Spacing="8" Margin="0,10,0,0">
+              <TextBlock Text="Expanders show/hide content on click:" Foreground="#64748B"/>
+              <Expander Header="Nested Expander 1">
+                <TextBlock Text="Content inside nested expander 1" Margin="10"/>
+              </Expander>
+              <Expander Header="Nested Expander 2">
+                <TextBlock Text="Content inside nested expander 2" Margin="10"/>
+              </Expander>
+            </StackPanel>
+          </Expander>
+        </StackPanel>
+      </Border>
+
+      <!-- Data Display Section -->
+      <Border Background="#F8FAFC" CornerRadius="8" Padding="16" BorderBrush="#E2E8F0" BorderThickness="1">
+        <StackPanel Spacing="16">
+          <TextBlock Text="📋 Data Display Controls" FontSize="18" FontWeight="SemiBold" Foreground="#1E293B"/>
+          <Separator Background="#E2E8F0"/>
+          
+          <!-- DataGrid-like display using ItemsControl -->
+          <Expander Header="Simple Data Table" IsExpanded="True">
+            <StackPanel Spacing="8" Margin="0,10,0,0">
+              <TextBlock Text="Table-like display using Grid layout:" Foreground="#64748B"/>
+              <Border BorderBrush="#E2E8F0" BorderThickness="1" CornerRadius="4" HorizontalAlignment="Left">
+                <Grid Width="350">
+                  <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                  </Grid.RowDefinitions>
+                  <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                  </Grid.ColumnDefinitions>
+                  
+                  <!-- Header -->
+                  <Border Grid.Row="0" Grid.Column="0" Background="#F1F5F9" Padding="8" BorderBrush="#E2E8F0" BorderThickness="0,0,1,1">
+                    <TextBlock Text="Name" FontWeight="Bold"/>
+                  </Border>
+                  <Border Grid.Row="0" Grid.Column="1" Background="#F1F5F9" Padding="8" BorderBrush="#E2E8F0" BorderThickness="0,0,1,1">
+                    <TextBlock Text="Age" FontWeight="Bold"/>
+                  </Border>
+                  <Border Grid.Row="0" Grid.Column="2" Background="#F1F5F9" Padding="8" BorderBrush="#E2E8F0" BorderThickness="0,0,0,1">
+                    <TextBlock Text="Role" FontWeight="Bold"/>
+                  </Border>
+                  
+                  <!-- Row 1 -->
+                  <Border Grid.Row="1" Grid.Column="0" Padding="8" BorderBrush="#E2E8F0" BorderThickness="0,0,1,1">
+                    <TextBlock Text="Alice"/>
+                  </Border>
+                  <Border Grid.Row="1" Grid.Column="1" Padding="8" BorderBrush="#E2E8F0" BorderThickness="0,0,1,1">
+                    <TextBlock Text="28"/>
+                  </Border>
+                  <Border Grid.Row="1" Grid.Column="2" Padding="8" BorderBrush="#E2E8F0" BorderThickness="0,0,0,1">
+                    <TextBlock Text="Developer"/>
+                  </Border>
+                  
+                  <!-- Row 2 -->
+                  <Border Grid.Row="2" Grid.Column="0" Padding="8" BorderBrush="#E2E8F0" BorderThickness="0,0,1,1">
+                    <TextBlock Text="Bob"/>
+                  </Border>
+                  <Border Grid.Row="2" Grid.Column="1" Padding="8" BorderBrush="#E2E8F0" BorderThickness="0,0,1,1">
+                    <TextBlock Text="34"/>
+                  </Border>
+                  <Border Grid.Row="2" Grid.Column="2" Padding="8" BorderBrush="#E2E8F0" BorderThickness="0,0,0,1">
+                    <TextBlock Text="Designer"/>
+                  </Border>
+                  
+                  <!-- Row 3 -->
+                  <Border Grid.Row="3" Grid.Column="0" Padding="8" BorderBrush="#E2E8F0" BorderThickness="0,0,1,0">
+                    <TextBlock Text="Charlie"/>
+                  </Border>
+                  <Border Grid.Row="3" Grid.Column="1" Padding="8" BorderBrush="#E2E8F0" BorderThickness="0,0,1,0">
+                    <TextBlock Text="31"/>
+                  </Border>
+                  <Border Grid.Row="3" Grid.Column="2" Padding="8">
+                    <TextBlock Text="Manager"/>
+                  </Border>
+                </Grid>
+              </Border>
+            </StackPanel>
+          </Expander>
+          
+          <!-- TreeView Example -->
+          <Expander Header="TreeView Control" IsExpanded="True">
+            <StackPanel Spacing="8" Margin="0,10,0,0">
+              <TextBlock Text="Hierarchical data display:" Foreground="#64748B"/>
+              <TreeView HorizontalAlignment="Left" Width="300">
+                <TreeViewItem Header="📁 Project Root" IsExpanded="True">
+                  <TreeViewItem Header="📁 src" IsExpanded="True">
+                    <TreeViewItem Header="📄 App.cs"/>
+                    <TreeViewItem Header="📄 MainView.axaml"/>
+                    <TreeViewItem Header="📄 MainViewModel.cs"/>
+                  </TreeViewItem>
+                  <TreeViewItem Header="📁 assets">
+                    <TreeViewItem Header="🖼️ logo.png"/>
+                    <TreeViewItem Header="🎨 styles.css"/>
+                  </TreeViewItem>
+                  <TreeViewItem Header="📄 README.md"/>
+                  <TreeViewItem Header="📄 .gitignore"/>
+                </TreeViewItem>
+              </TreeView>
+            </StackPanel>
+          </Expander>
+        </StackPanel>
+      </Border>
+
+      <!-- Footer -->
+      <Border Background="#1E293B" CornerRadius="8" Padding="16">
+        <StackPanel HorizontalAlignment="Center" Spacing="4">
+          <TextBlock Text="Avalonia Web Controls Showcase" Foreground="White" 
+                     HorizontalAlignment="Center" FontWeight="SemiBold"/>
+          <TextBlock Text="Built with Avalonia UI 11.x • Deployed via WebAssembly" 
+                     Foreground="#94A3B8" HorizontalAlignment="Center" FontSize="12"/>
+          <TextBlock Text="Explore more at github.com/AvaloniaUI/Avalonia" 
+                     Foreground="#64748B" HorizontalAlignment="Center" FontSize="11"/>
+        </StackPanel>
+      </Border>
+      
+    </StackPanel>
+  </ScrollViewer>
 </UserControl>
