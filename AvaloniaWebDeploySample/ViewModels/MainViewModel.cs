@@ -77,7 +77,17 @@ public partial class MainViewModel : ViewModelBase
         "Item Epsilon"
     };
 
-    // NumericUpDown demo
+    // Numeric Input demo
+    /// <summary>
+    /// The minimum allowed value for the numeric input control (displayed as 0-100 range in UI)
+    /// </summary>
+    private const decimal MinNumericValue = 0;
+    
+    /// <summary>
+    /// The maximum allowed value for the numeric input control (displayed as 0-100 range in UI)
+    /// </summary>
+    private const decimal MaxNumericValue = 100;
+    
     [ObservableProperty]
     private decimal _numericValue = 10;
 
@@ -118,5 +128,23 @@ public partial class MainViewModel : ViewModelBase
     partial void OnSliderValueChanged(double value)
     {
         ProgressValue = value;
+    }
+
+    [RelayCommand]
+    private void IncrementNumeric()
+    {
+        if (NumericValue < MaxNumericValue)
+        {
+            NumericValue++;
+        }
+    }
+
+    [RelayCommand]
+    private void DecrementNumeric()
+    {
+        if (NumericValue > MinNumericValue)
+        {
+            NumericValue--;
+        }
     }
 }

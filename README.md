@@ -19,8 +19,8 @@ The showcase is organized by control categories:
 - **Slider** - Horizontal and vertical sliders with value display
 - **ComboBox** - Dropdown selection controls
 - **ListBox** - List selection with item binding
-- **NumericUpDown** - Numeric input with increment/decrement
-- **Calendar** - Date picker control
+- **Numeric Input** - Numeric input with increment/decrement buttons (WASM-compatible)
+- **DatePicker** - Date selection control (WASM-compatible)
 
 #### 📊 Display Controls
 - **TextBlock** - Text display with various styles (bold, italic, colored, formatted)
@@ -63,6 +63,13 @@ Those who want to quick use → Just use this template by clicking the "Use this
 - **WebAssembly (WASM)** - Browser-based execution
 - **CommunityToolkit.Mvvm** - MVVM support library
 - **GitHub Pages** - Static web hosting
+
+## WASM Compatibility Notes
+
+This showcase has been optimized for WebAssembly deployment:
+- Uses `DatePicker` instead of `Calendar` for better WASM support
+- Uses custom numeric input controls instead of `NumericUpDown` for better WASM compatibility
+- All other controls are fully supported in WASM environments
 
 ## To Do
 

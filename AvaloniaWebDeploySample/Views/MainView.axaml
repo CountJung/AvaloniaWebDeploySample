@@ -140,21 +140,26 @@
             </StackPanel>
           </Expander>
           
-          <!-- NumericUpDown Example -->
-          <Expander Header="NumericUpDown Control" IsExpanded="True">
+          <!-- Numeric Input Example (WASM-compatible alternative to NumericUpDown) -->
+          <Expander Header="Numeric Input Control" IsExpanded="True">
             <StackPanel Spacing="8" Margin="0,10,0,0">
               <TextBlock Text="Numeric input with increment/decrement buttons:" Foreground="#64748B"/>
-              <NumericUpDown Value="{Binding NumericValue}" Minimum="0" Maximum="100" 
-                             Increment="1" Width="150" HorizontalAlignment="Left"/>
+              <StackPanel Orientation="Horizontal" Spacing="4" HorizontalAlignment="Left">
+                <Button Content="-" Command="{Binding DecrementNumericCommand}" Width="30" Height="30"/>
+                <TextBox Text="{Binding NumericValue}" Width="90" Height="30" IsReadOnly="True"
+                         Watermark="0-100" TextAlignment="Center" VerticalContentAlignment="Center"/>
+                <Button Content="+" Command="{Binding IncrementNumericCommand}" Width="30" Height="30"/>
+              </StackPanel>
               <TextBlock Text="{Binding NumericValue, StringFormat='Value: {0}'}" Foreground="#3B82F6"/>
             </StackPanel>
           </Expander>
           
-          <!-- Calendar Example -->
-          <Expander Header="Calendar Control" IsExpanded="True">
+          <!-- Date Picker Example (WASM-compatible alternative to Calendar) -->
+          <Expander Header="Date Picker Control" IsExpanded="True">
             <StackPanel Spacing="8" Margin="0,10,0,0">
-              <TextBlock Text="Select a date from the calendar:" Foreground="#64748B"/>
-              <Calendar SelectedDate="{Binding SelectedDate}" HorizontalAlignment="Left"/>
+              <TextBlock Text="Select a date from the picker:" Foreground="#64748B"/>
+              <DatePicker SelectedDate="{Binding SelectedDate}" 
+                          HorizontalAlignment="Left"/>
               <TextBlock Text="{Binding SelectedDate, StringFormat='Selected Date: {0:d}'}" Foreground="#059669"/>
             </StackPanel>
           </Expander>
