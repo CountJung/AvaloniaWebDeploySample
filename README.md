@@ -64,6 +64,13 @@ Those who want to quick use → Just use this template by clicking the "Use this
 - **CommunityToolkit.Mvvm** - MVVM support library
 - **GitHub Pages** - Static web hosting
 
+## WASM Compatibility Notes
+
+This showcase has been optimized for WebAssembly deployment:
+- Uses `DatePicker` instead of `Calendar` for better WASM support
+- Uses custom numeric input controls instead of `NumericUpDown` for better WASM compatibility
+- All other controls are fully supported in WASM environments
+
 ## To Do
 
 - [ ] Find out more clean Action: ex (publish/wwwroot → publish) 
