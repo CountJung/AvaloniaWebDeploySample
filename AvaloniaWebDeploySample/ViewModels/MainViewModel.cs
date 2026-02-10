@@ -77,9 +77,12 @@ public partial class MainViewModel : ViewModelBase
         "Item Epsilon"
     };
 
-    // NumericUpDown demo
+    // Numeric Input demo
     [ObservableProperty]
     private decimal _numericValue = 10;
+    
+    private const decimal MinNumericValue = 0;
+    private const decimal MaxNumericValue = 100;
 
     // Calendar demo
     [ObservableProperty]
@@ -118,5 +121,23 @@ public partial class MainViewModel : ViewModelBase
     partial void OnSliderValueChanged(double value)
     {
         ProgressValue = value;
+    }
+
+    [RelayCommand]
+    private void IncrementNumeric()
+    {
+        if (NumericValue < MaxNumericValue)
+        {
+            NumericValue++;
+        }
+    }
+
+    [RelayCommand]
+    private void DecrementNumeric()
+    {
+        if (NumericValue > MinNumericValue)
+        {
+            NumericValue--;
+        }
     }
 }

@@ -19,8 +19,8 @@ The showcase is organized by control categories:
 - **Slider** - Horizontal and vertical sliders with value display
 - **ComboBox** - Dropdown selection controls
 - **ListBox** - List selection with item binding
-- **NumericUpDown** - Numeric input with increment/decrement
-- **Calendar** - Date picker control
+- **Numeric Input** - Numeric input with increment/decrement buttons (WASM-compatible)
+- **DatePicker** - Date selection control (WASM-compatible)
 
 #### 📊 Display Controls
 - **TextBlock** - Text display with various styles (bold, italic, colored, formatted)
