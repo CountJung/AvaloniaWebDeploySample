@@ -146,7 +146,7 @@
               <TextBlock Text="Numeric input with increment/decrement buttons:" Foreground="#64748B"/>
               <StackPanel Orientation="Horizontal" Spacing="4" HorizontalAlignment="Left">
                 <Button Content="-" Command="{Binding DecrementNumericCommand}" Width="30" Height="30"/>
-                <TextBox Text="{Binding NumericValue}" Width="90" Height="30" 
+                <TextBox Text="{Binding NumericValue}" Width="90" Height="30" IsReadOnly="True"
                          Watermark="0-100" TextAlignment="Center" VerticalContentAlignment="Center"/>
                 <Button Content="+" Command="{Binding IncrementNumericCommand}" Width="30" Height="30"/>
               </StackPanel>
