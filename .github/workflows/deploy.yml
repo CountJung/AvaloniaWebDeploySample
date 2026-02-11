@@ -37,8 +37,6 @@ jobs:
           rm -rf $OUTPUT_PATH/AvaloniaWebDeploySample.Browser
           rm -f $OUTPUT_PATH/*.json
           rm -f $OUTPUT_PATH/web.config
-          rm -f $OUTPUT_PATH/emcc-props.json
-          rm -f $OUTPUT_PATH/runtimeconfig.template.json
 
       - name: Change base-tag in index.html
         run: sed -i 's#<base href="/" />#<base href="/AvaloniaWebDeploySample/" />#g' $OUTPUT_PATH/index.html
